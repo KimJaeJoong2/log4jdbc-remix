@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>1</version>
+        <version>7</version>
     </parent>
     <licenses>
         <license>
@@ -24,6 +24,12 @@
         <developerConnection>scm:svn:https://log4jdbc-remix.googlecode.com/svn/trunk/</developerConnection>
         <url>http://code.google.com/p/log4jdbc-remix/source/browse/</url>
     </scm>
+    <developers>
+        <developer>
+            <name>Tim Azzopardi</name>
+            <email>tim@tigerfive.com</email>
+        </developer>
+    </developers>
     <build>
         <plugins>
             <plugin>

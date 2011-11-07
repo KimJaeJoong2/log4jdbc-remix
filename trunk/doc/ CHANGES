@@ -1,3 +1,9 @@
+2011-11-07 0.2.6 
+o change test jars scope to test in pom
+o add ability to cope with aliases in select
+o add a unit test
+
+2010-06-14 0.2.5
 2010-06-14 0.2.4
 
 o synced with log4jdbc 1.2 beta 2 Release 

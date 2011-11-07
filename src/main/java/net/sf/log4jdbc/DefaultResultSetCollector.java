@@ -82,12 +82,21 @@ public class DefaultResultSetCollector implements ResultSetCollector {
     colNameToColIndex = new HashMap<String, Integer>(columnCount);
     for (int column = 1; column <= columnCount; column++) {
       colNameToColIndex.put(getColumnName(column).toLowerCase(), column);
+      colNameToColIndex.put(getColumnLabel(column).toLowerCase(), column);
     }
   }
 
   public String getColumnName(int column) {
     try {
       return metaData.getColumnName(column);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  public String getColumnLabel(int column) {
+    try {
+      return metaData.getColumnLabel(column);
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }

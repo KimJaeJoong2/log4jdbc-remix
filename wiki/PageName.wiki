@@ -10,6 +10,7 @@ https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage
 
 Basically all I need to do is:
 
+{{{
 mvn clean deploy
 mvn release:clean
 mvn release:prepare
@@ -20,3 +21,4 @@ Login to the Nexus UI.
 Go to Staging Repositories page.
 Select a staging repository.
 Click the Close button.
+}}

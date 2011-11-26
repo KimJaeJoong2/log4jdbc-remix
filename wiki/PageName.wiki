@@ -1,4 +1,4 @@
-#summary Notes on how to do a Maven release
+#summary How to do a Maven release
 
 = Introduction =
 

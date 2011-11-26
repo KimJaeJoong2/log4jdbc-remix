@@ -42,7 +42,7 @@ public class DefaultResultSetCollector implements ResultSetCollector {
   private Map<String, Integer> colNameToColIndex;
   private int colIndex = -1; // Useful for wasNull calls
   private static final List<String> GETTERS = Arrays.asList(new String[] { "getString", "getLong", "getInt", "getDate", "getTimestamp", "getTime",
-      "getBigDecimal", "getFloat", "getDouble", "getByte", "getShort", "getObject", });
+      "getBigDecimal", "getFloat", "getDouble", "getByte", "getShort", "getObject", "getBoolean", });
 
   public List<List<Object>> getRows() {
     return rows;

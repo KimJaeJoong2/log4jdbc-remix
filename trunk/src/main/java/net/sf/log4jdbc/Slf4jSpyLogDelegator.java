@@ -251,12 +251,12 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
         {
             sql = sqls[i];
             batchReport.append("\n");
-            batchReport.append(Utilities.rightJustify(fieldSize, "" + (++i)));
+            batchReport.append(Utilities.rightJustify(fieldSize, "" + i));
             batchReport.append(":  ");
             batchReport.append(sql);
         }
         sql = batchReport.toString();
-        sqlOccured(spy, sql, methodCall);
+        sqlOccured(spy, methodCall, sql);
         return sql;
     }
 

@@ -21,4 +21,5 @@ Login to the Nexus UI.
 Go to Staging Repositories page.
 Select a staging repository.
 Click the Close button.
-}}
+THEN Click the Release button and it should also appear in maven central etc
+}}}

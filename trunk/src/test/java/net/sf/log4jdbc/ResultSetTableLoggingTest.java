@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.h2.jdbcx.JdbcDataSource;
@@ -30,6 +31,7 @@ public class ResultSetTableLoggingTest {
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+    	LogManager.resetConfiguration();
         Logger.getRootLogger().setLevel(Level.ERROR);
         inMemoryLogger = new SimpleInMemoryLog4jAppender();
         Logger.getRootLogger().addAppender(inMemoryLogger);

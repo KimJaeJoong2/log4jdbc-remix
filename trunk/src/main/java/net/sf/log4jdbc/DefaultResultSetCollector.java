@@ -81,8 +81,14 @@ public class DefaultResultSetCollector implements ResultSetCollector {
     int columnCount = getColumnCount();
     colNameToColIndex = new HashMap<String, Integer>(columnCount);
     for (int column = 1; column <= columnCount; column++) {
-      colNameToColIndex.put(getColumnName(column).toLowerCase(), column);
-      colNameToColIndex.put(getColumnLabel(column).toLowerCase(), column);
+      colNameToColIndexPut(getColumnName(column), column);
+      colNameToColIndexPut(getColumnLabel(column), column);
+    }
+  }
+
+  private void colNameToColIndexPut(String name, int column) {
+    if (name != null && name.length() > 0) {
+      colNameToColIndex.put(name.toLowerCase(), column);
     }
   }
 
@@ -137,6 +143,8 @@ public class DefaultResultSetCollector implements ResultSetCollector {
       }
     }
     // TODO: Tim: if prev() called, warn about no support for reverse cursors
+    // TODO: Tim: if close() is called before the next() has returned false, 
+    // then we could return true to force the printing of any result set collected
 
     if ("getMetaData()".equals(methodCall)) {
       // If the client code calls getMetaData then we don't have to

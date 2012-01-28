@@ -43,17 +43,17 @@ public class SpyLogFactory
    *
    * @return the default SpyLogDelegator for logging to the logger.
    */
-  public static SpyLogDelegator getSpyLogDelegator()
+  public static SpyLogDelegator getSpyLogDelegatorDefault()
   {
     return logger;
   }
-  
+
   /**
-   * Optionally override the {@link SpyLogDelegator} implementation  
+   * Optionally override the {@link SpyLogDelegator} implementation
    * and thus take more control over the logging.<br/>
    * Note: It is the caller's responsibility to make sure this is set before
    * JDBC activity occurs and to ensure thread safety.
-   * 
+   *
    * @param logDelegator the log delegator responsible for actually logging
    * JDBC events.
    */
@@ -63,5 +63,5 @@ public class SpyLogFactory
     }
     logger = logDelegator;
   }
-  
+
 }

@@ -104,7 +104,7 @@ public class DriverSpy implements Driver
    */
   private static Map rdbmsSpecifics;
 
-  static final SpyLogDelegator log = SpyLogFactory.getSpyLogDelegator();
+  static final SpyLogDelegator log = SpyLogFactory.getSpyLogDelegatorDefault();
 
   /**
    * Optional package prefix to use for finding application generating point of
@@ -525,7 +525,7 @@ public class DriverSpy implements Driver
     rdbmsSpecifics = new HashMap();
     rdbmsSpecifics.put("oracle.jdbc.driver.OracleDriver", oracle);
     rdbmsSpecifics.put("oracle.jdbc.OracleDriver", oracle);
-    rdbmsSpecifics.put("Oracle JDBC driver", oracle);    
+    rdbmsSpecifics.put("Oracle JDBC driver", oracle);
     rdbmsSpecifics.put("net.sourceforge.jtds.jdbc.Driver", sqlServer);
     rdbmsSpecifics.put("com.microsoft.jdbc.sqlserver.SQLServerDriver",
       sqlServer);
@@ -724,7 +724,7 @@ public class DriverSpy implements Driver
     }
     if (log.isJdbcLoggingEnabled())
     {
-      ConnectionSpy cspy = new ConnectionSpy(c);
+      ConnectionSpy cspy = new ConnectionSpy(c, log);
       RdbmsSpecifics r = null;
       String dclass = d.getClass().getName();
       if (dclass != null && dclass.length() > 0)

@@ -72,9 +72,9 @@ public class CallableStatementSpy extends PreparedStatementSpy implements Callab
    * @param connectionSpy         The ConnectionSpy which produced this CallableStatementSpy
    * @param realCallableStatement The real CallableStatement that is being spied upon
    */
-  public CallableStatementSpy(String sql, ConnectionSpy connectionSpy, CallableStatement realCallableStatement)
+  public CallableStatementSpy(String sql, ConnectionSpy connectionSpy, CallableStatement realCallableStatement, SpyLogDelegator log)
   {
-    super(sql, connectionSpy, realCallableStatement);
+    super(sql, connectionSpy, realCallableStatement, log);
     this.realCallableStatement = realCallableStatement;
   }
 

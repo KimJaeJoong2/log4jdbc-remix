@@ -116,7 +116,7 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param parent Statement that generated this ResultSet.
    * @param realResultSet real underlying ResultSet that is being wrapped.
    */
-  public ResultSetSpy(StatementSpy parent, ResultSet realResultSet)
+  public ResultSetSpy(StatementSpy parent, ResultSet realResultSet, SpyLogDelegator log)
   {
     if (realResultSet == null)
     {
@@ -124,7 +124,7 @@ public class ResultSetSpy implements ResultSet, Spy
     }
     this.realResultSet = realResultSet;
     this.parent = parent;
-    log = SpyLogFactory.getSpyLogDelegator();
+    this.log = log;
     if (log.isResultSetCollectionEnabled())
     {
       resultSetCollector = new DefaultResultSetCollector(log.isResultSetCollectionEnabledWithUnreadValueFillIn());
@@ -180,7 +180,7 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param value int return value.
    * @return the int return value as passed in.
    */
-  protected int reportReturn(String methodCall, Integer value, Object... args) 
+  protected int reportReturn(String methodCall, Integer value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
@@ -193,7 +193,7 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param value double return value.
    * @return the double return value as passed in.
    */
-  protected double reportReturn(String methodCall, Double value, Object... args) 
+  protected double reportReturn(String methodCall, Double value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
@@ -206,7 +206,7 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param value short return value.
    * @return the short return value as passed in.
    */
-  protected short reportReturn(String methodCall, Short value, Object... args) 
+  protected short reportReturn(String methodCall, Short value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
@@ -219,7 +219,7 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param value long return value.
    * @return the long return value as passed in.
    */
-  protected long reportReturn(String methodCall, Long value, Object... args) 
+  protected long reportReturn(String methodCall, Long value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
@@ -232,31 +232,31 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param value float return value.
    * @return the float return value as passed in.
    */
-  protected float reportReturn(String methodCall, Float value, Object... args) 
+  protected float reportReturn(String methodCall, Float value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Object reportReturn(String methodCall, Time value, Object... args) 
+  protected Object reportReturn(String methodCall, Time value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected BigDecimal reportReturn(String methodCall, BigDecimal value, Object... args) 
+  protected BigDecimal reportReturn(String methodCall, BigDecimal value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Timestamp reportReturn(String methodCall, Timestamp value, Object... args) 
+  protected Timestamp reportReturn(String methodCall, Timestamp value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected String reportReturn(String methodCall, String value, Object... args) 
+  protected String reportReturn(String methodCall, String value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
@@ -269,73 +269,73 @@ public class ResultSetSpy implements ResultSet, Spy
    * @param value return Object.
    * @return the return Object as passed in.
    */
-  protected Object reportReturn(String methodCall, Object returnValue, Object... args) 
+  protected Object reportReturn(String methodCall, Object returnValue, Object... args)
   {
     reportAllReturns(methodCall, returnValue, args);
     return returnValue;
   }
 
-  protected Ref reportReturn(String methodCall, Ref value, Object... args) 
+  protected Ref reportReturn(String methodCall, Ref value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Blob reportReturn(String methodCall, Blob value, Object... args) 
+  protected Blob reportReturn(String methodCall, Blob value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Clob reportReturn(String methodCall, Clob value, Object... args) 
+  protected Clob reportReturn(String methodCall, Clob value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Array reportReturn(String methodCall, Array value, Object... args) 
+  protected Array reportReturn(String methodCall, Array value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected RowId reportReturn(String methodCall, RowId value, Object... args) 
+  protected RowId reportReturn(String methodCall, RowId value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected SQLXML reportReturn(String methodCall, SQLXML value, Object... args) 
+  protected SQLXML reportReturn(String methodCall, SQLXML value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Reader reportReturn(String methodCall, Reader value, Object... args) 
+  protected Reader reportReturn(String methodCall, Reader value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected Date reportReturn(String methodCall, Date value, Object... args) 
+  protected Date reportReturn(String methodCall, Date value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected InputStream reportReturn(String methodCall, InputStream value, Object... args) 
+  protected InputStream reportReturn(String methodCall, InputStream value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected URL reportReturn(String methodCall, URL value, Object... args) 
+  protected URL reportReturn(String methodCall, URL value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
   }
 
-  protected byte[] reportReturn(String methodCall, byte[] value, Object... args) 
+  protected byte[] reportReturn(String methodCall, byte[] value, Object... args)
   {
     reportAllReturns(methodCall, "" + value, args);
     return value;
@@ -343,13 +343,13 @@ public class ResultSetSpy implements ResultSet, Spy
 
   // forwarding methods
 
-  public void updateAsciiStream(int columnIndex, InputStream x, int length) throws SQLException 
+  public void updateAsciiStream(int columnIndex, InputStream x, int length) throws SQLException
   {
     String methodCall = "updateAsciiStream(" + columnIndex + ", " + x + ", " + length + ")";
     try {
       realResultSet.updateAsciiStream(columnIndex, x, length);
-    } 
-    catch (SQLException s) 
+    }
+    catch (SQLException s)
     {
       reportException(methodCall, s);
       throw s;
@@ -520,7 +520,7 @@ public class ResultSetSpy implements ResultSet, Spy
     String methodCall = "getTimestamp(" + columnName + ", " + cal + ")";
     try
     {
-      return (Timestamp) reportReturn(methodCall, realResultSet.getTimestamp(columnName, cal), columnName, cal);
+      return (Timestamp) reportReturn(methodCall, realResultSet.getTimestamp(columnName, cal), cal);
     }
     catch (SQLException s)
     {
@@ -1507,7 +1507,7 @@ public class ResultSetSpy implements ResultSet, Spy
     reportReturn(methodCall, (Object[]) null);
   }
 
-  public boolean isBeforeFirst() throws SQLException 
+  public boolean isBeforeFirst() throws SQLException
   {
     String methodCall = "isBeforeFirst()";
     try
@@ -2108,7 +2108,7 @@ public class ResultSetSpy implements ResultSet, Spy
       else
       {
         // todo: what's going on here?
-        return (Statement) reportReturn(methodCall, new StatementSpy(new ConnectionSpy(s.getConnection()), s), (Object[]) null);
+        return (Statement) reportReturn(methodCall, new StatementSpy(new ConnectionSpy(s.getConnection(), this.log), s, this.log), (Object[]) null);
       }
     }
     catch (SQLException s)

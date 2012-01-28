@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Tim Azzopardi 
+ * Copyright 2010 Tim Azzopardi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ import javax.sql.DataSource;
 
 
 /**
- * A proxy datasource that can be used to wrap a real data source allowing log4jdbc to do its work on the real 
+ * A proxy datasource that can be used to wrap a real data source allowing log4jdbc to do its work on the real
  * data source.
  * Inspired by http://groups.google.com/group/log4jdbc/browse_thread/thread/0706611d1b85e210
- * 
+ *
  * This can be useful in a Spring context. Imagine your spring context includes this datasource definition
- * 
+ *
  * <code><pre>
  *  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
  *      <property name="driverClass" value="${datasource.driverClassName}"/>
@@ -42,9 +42,9 @@ import javax.sql.DataSource;
  *       <property name="maxStatements" value="${datasource.maxStatements}" />
  *   </bean>
  * </pre></code>
- * 
+ *
  * You can get log4jdbc to work on this using the following config changes
- * 
+ *
  * <code><pre>
  *  <bean id="dataSourceSpied" class="com.mchange.v2.c3p0.ComboPooledDataSource">
  *      <property name="driverClass" value="${datasource.driverClassName}"/>
@@ -56,44 +56,46 @@ import javax.sql.DataSource;
  *       <property name="maxPoolSize" value="${datasource.maxPoolSize}" />
  *       <property name="maxStatements" value="${datasource.maxStatements}" />
  *   </bean>
- *   
+ *
  *   <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
  *     <constructor-arg ref="dataSourceSpied" />
  *   </bean>
  * </pre></code>
- * 
- * 
+ *
+ *
  * @author tim.azzopardi
  *
  */
 public class Log4jdbcProxyDataSource implements DataSource {
-    private DataSource realDataSource; 
-    public Log4jdbcProxyDataSource(DataSource realDataSource) 
-    { 
-            this.realDataSource = realDataSource; 
-    } 
+    private DataSource realDataSource;
+    private SpyLogDelegator spyLogDelegator = SpyLogFactory.getSpyLogDelegatorDefault();
+
+    public Log4jdbcProxyDataSource(DataSource realDataSource)
+    {
+            this.realDataSource = realDataSource;
+    }
 
     public SpyLogDelegator getLogFormatter() {
-      return SpyLogFactory.getSpyLogDelegator();
+      return spyLogDelegator;
     }
     /**
      * Set a custom SpyLogDelegator (default is usually Slf4jSpyLogDelegator)
      * @param spyLogDelegator
      */
     public void setLogFormatter(SpyLogDelegator spyLogDelegator) {
-      SpyLogFactory.setSpyLogDelegator(spyLogDelegator);
+      this.spyLogDelegator = spyLogDelegator;
     }
     @Override
-    public Connection getConnection() throws SQLException 
-    { 
+    public Connection getConnection() throws SQLException
+    {
             final Connection connection = realDataSource.getConnection();
-            return new ConnectionSpy(connection,DriverSpy.getRdbmsSpecifics(connection)); 
-    } 
+            return new ConnectionSpy(connection,DriverSpy.getRdbmsSpecifics(connection), spyLogDelegator);
+    }
     @Override
-    public Connection getConnection(String username, String password) throws SQLException 
-    { 
+    public Connection getConnection(String username, String password) throws SQLException
+    {
             final Connection connection = realDataSource.getConnection(username, password);
-            return new ConnectionSpy(connection,DriverSpy.getRdbmsSpecifics(connection)); 
+            return new ConnectionSpy(connection,DriverSpy.getRdbmsSpecifics(connection), spyLogDelegator);
     }
     public int getLoginTimeout() throws SQLException {
         return realDataSource.getLoginTimeout();
@@ -112,7 +114,7 @@ public class Log4jdbcProxyDataSource implements DataSource {
     }
     public <T> T unwrap(Class<T> iface) throws SQLException {
         return realDataSource.unwrap(iface);
-    } 
-    
+    }
+
 
 }

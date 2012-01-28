@@ -179,9 +179,9 @@ public class PreparedStatementSpy extends StatementSpy implements PreparedStatem
    * @param connectionSpy         ConnectionSpy that was called to produce this PreparedStatement.
    * @param realPreparedStatement The actual PreparedStatement that is being spied upon.
    */
-  public PreparedStatementSpy(String sql, ConnectionSpy connectionSpy, PreparedStatement realPreparedStatement)
+  public PreparedStatementSpy(String sql, ConnectionSpy connectionSpy, PreparedStatement realPreparedStatement, SpyLogDelegator log)
   {
-    super(connectionSpy, realPreparedStatement);  // does null check for us
+    super(connectionSpy, realPreparedStatement, log);  // does null check for us
     this.sql = sql;
     this.realPreparedStatement = realPreparedStatement;
     rdbmsSpecifics = connectionSpy.getRdbmsSpecifics();
@@ -309,7 +309,7 @@ public class PreparedStatementSpy extends StatementSpy implements PreparedStatem
   public void setBlob(int i, Blob x) throws SQLException
   {
     String methodCall = "setBlob(" + i + ", " + x + ")";
-    argTraceSet(i, "(Blob)", 
+    argTraceSet(i, "(Blob)",
       x==null?null:("<Blob of size " + x.length() + ">"));
     try
     {
@@ -734,7 +734,7 @@ public class PreparedStatementSpy extends StatementSpy implements PreparedStatem
     {
       ResultSet r = realPreparedStatement.executeQuery();
       reportSqlTiming(System.currentTimeMillis() - tstart, dumpedSql, methodCall);
-      ResultSetSpy rsp = new ResultSetSpy(this, r);
+      ResultSetSpy rsp = new ResultSetSpy(this, r, this.log);
       return (ResultSet) reportReturn(methodCall, rsp);
     }
     catch (SQLException s)

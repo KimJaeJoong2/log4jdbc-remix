@@ -15,33 +15,33 @@
  */
 package net.sf.log4jdbc;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
- * RDBMS specifics for the Oracle DB.
+ * RDBMS specifics for the MySql db.
  *
  * @author Arthur Blake
  */
-class OracleRdbmsSpecifics extends RdbmsSpecifics
+class MySqlRdbmsSpecifics extends RdbmsSpecifics
 {
-  OracleRdbmsSpecifics()
+  MySqlRdbmsSpecifics()
   {
     super();
   }
 
   String formatParameterObject(Object object)
   {
-    if (object instanceof Timestamp)
+    if (object instanceof java.sql.Time)
     {
-      return "to_timestamp('" + new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS").
-        format(object) + "', 'mm/dd/yyyy hh24:mi:ss.ff3')";
+      return "'" + new SimpleDateFormat("HH:mm:ss").format(object) + "'";
     }
-    else if (object instanceof Date)
+    else if (object instanceof java.sql.Date)
     {
-      return "to_date('" + new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").
-        format(object) + "', 'mm/dd/yyyy hh24:mi:ss')";
+      return "'" + new SimpleDateFormat("yyyy-MM-dd").format(object) + "'";
+    }
+    else if (object instanceof java.util.Date)  // (includes java.sql.Timestamp)
+    {
+      return "'" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(object) + "'";
     }
     else
     {

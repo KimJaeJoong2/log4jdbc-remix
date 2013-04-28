@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2010 Arthur Blake
+ * Copyright 2007-2012 Arthur Blake
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2098,24 +2098,7 @@ public class ResultSetSpy implements ResultSet, Spy
   public Statement getStatement() throws SQLException
   {
     String methodCall = "getStatement()";
-    try
-    {
-      Statement s = realResultSet.getStatement();
-      if (s == null)
-      {
-        return (Statement) reportReturn(methodCall, s, (Object[]) null);
-      }
-      else
-      {
-        // todo: what's going on here?
-        return (Statement) reportReturn(methodCall, new StatementSpy(new ConnectionSpy(s.getConnection(), this.log), s, this.log), (Object[]) null);
-      }
-    }
-    catch (SQLException s)
-    {
-      reportException(methodCall, s);
-      throw s;
-    }
+    return (Statement) reportReturn(methodCall, parent, (Object[]) null);
   }
 
   public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException

@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2010 Arthur Blake
+ * Copyright 2007-2012 Arthur Blake
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1598,7 +1598,7 @@ public class CallableStatementSpy extends PreparedStatementSpy implements Callab
 
   public Array getArray(String parameterName) throws SQLException
   {
-    String methodCall = "getURL(" + parameterName + ")";
+    String methodCall = "getArray(" + parameterName + ")";
     try
     {
       return (Array) reportReturn(methodCall, realCallableStatement.getArray(parameterName));

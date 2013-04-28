@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2010 Arthur Blake
+ * Copyright 2007-2012 Arthur Blake
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -208,6 +208,13 @@ public class DriverSpy implements Driver
    * Trim SQL before logging it?
    */
   static boolean TrimSql;
+
+  /**
+   * Remove extra Lines in the SQL that consist of only white space?
+   * Only when 2 or more lines in a row like this occur, will the extra lines (beyond 1)
+   * be removed.
+   */
+  static boolean TrimExtraBlankLinesInSql;
 
   /**
    * Coldfusion typically calls PreparedStatement.getGeneratedKeys() after
@@ -435,6 +442,8 @@ public class DriverSpy implements Driver
       "log4jdbc.auto.load.popular.drivers", true);
 
     TrimSql = getBooleanOption(props, "log4jdbc.trim.sql", true);
+    
+    TrimExtraBlankLinesInSql = getBooleanOption(props, "log4jdbc.trim.sql.extrablanklines", true);
 
     SuppressGetGeneratedKeysException =
     	getBooleanOption(props, "log4jdbc.suppress.generated.keys.exception",
@@ -520,6 +529,7 @@ public class DriverSpy implements Driver
 
     SqlServerRdbmsSpecifics sqlServer = new SqlServerRdbmsSpecifics();
     OracleRdbmsSpecifics oracle = new OracleRdbmsSpecifics();
+    MySqlRdbmsSpecifics mySql = new MySqlRdbmsSpecifics();
 
     /** create lookup Map for specific rdbms formatters */
     rdbmsSpecifics = new HashMap();
@@ -530,8 +540,10 @@ public class DriverSpy implements Driver
     rdbmsSpecifics.put("com.microsoft.jdbc.sqlserver.SQLServerDriver",
       sqlServer);
     rdbmsSpecifics.put("weblogic.jdbc.sqlserver.SQLServerDriver", sqlServer);
+    rdbmsSpecifics.put("com.mysql.jdbc.Driver", mySql);
+    
 
-    log.debug("... log4jdbc initialized! ...");
+    log.debug("... log4jdbc-remix initialized! ...");
   }
 
   static RdbmsSpecifics defaultRdbmsSpecifics = new RdbmsSpecifics();

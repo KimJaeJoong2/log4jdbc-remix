@@ -1,6 +1,28 @@
-2010-??-?? 0.2.5 
-o change test jars scope to test in pom
+2013-04-28 Synchronized to log4jdbc 1.2 Release
 
+    o escape single quotes in PreparedStatement/CallableStatement bind variables (Issue 36.)
+
+    o process SQL consistently when the sql is dumped because an exception occurred.
+
+    o new SQL formatter to more reliably dump sql that can be run for MySql (Issue 34.)
+
+    o don't show debug info in sql timing dump unless debug is enabled on the logger
+      (to make the sql timing dump consistent with the way other the loggers work)
+
+    o add new option, log4jdbc.trim.sql.extrablanklines for removing
+      extra blank lines from sql output.
+
+    o fix issue where extra connection was being created when 
+      ResultSet.getStatement was being called (Issue 33.)
+
+    o performance enhancement when logging not enabled (Issue 29.)
+
+2011-11-07 0.2.6 
+    o change test jars scope to test in pom
+    o add ability to cope with aliases in select
+    o add a unit test
+
+2010-06-14 0.2.5
 2010-06-14 0.2.4
 
 o synced with log4jdbc 1.2 beta 2 Release 

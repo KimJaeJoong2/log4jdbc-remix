@@ -15,11 +15,13 @@
  */
 package net.sf.log4jdbc;
 
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
 import java.util.StringTokenizer;
 
-
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Delegates JDBC spy logging events to the the Simple Logging Facade for Java (slf4j).
@@ -117,6 +119,8 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
         }
         else
         {
+            sql = processSql(sql);
+        	
             jdbcLogger.error(header + " " + sql, e);
 
             // if at debug level, display debug info to error log
@@ -225,15 +229,14 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
     {
         if (!DriverSpy.DumpSqlFilteringOn || shouldSqlBeLogged(sql))
         {
-            sql = processSql(sql);
-
             if (sqlOnlyLogger.isDebugEnabled())
             {
-                sqlOnlyLogger.debug(getDebugInfo() + nl + spy.getConnectionNumber() + ". " + sql);
+				sqlOnlyLogger.debug(getDebugInfo() + nl
+						+ spy.getConnectionNumber() + ". " + processSql(sql));
             }
             else if (sqlOnlyLogger.isInfoEnabled())
             {
-                sqlOnlyLogger.info(sql);
+                sqlOnlyLogger.info(processSql(sql));
             }
             return sql;
         }
@@ -279,7 +282,7 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
             sql = sql.trim();
         }
 
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
 
         if (DriverSpy.DumpSqlMaxLineLength <= 0)
         {
@@ -313,7 +316,52 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
             output.append(";");
         }
 
-        return output.toString();
+        String stringOutput = output.toString();
+        
+        if (DriverSpy.TrimExtraBlankLinesInSql)
+        {
+          LineNumberReader lineReader = new LineNumberReader(new StringReader(stringOutput));
+
+          output = new StringBuilder();
+
+          int contiguousBlankLines = 0;
+          try
+          {
+            while (true)
+            {
+              String line = lineReader.readLine();
+              if (line==null)
+              {
+                break;
+              }
+
+              // is this line blank?
+              if (line.trim().length() == 0)
+              {
+              	contiguousBlankLines ++;
+              	// skip contiguous blank lines
+              	if (contiguousBlankLines > 1)
+              	{
+                  continue;
+              	}
+              }
+              else
+              {
+              	contiguousBlankLines = 0;
+              	output.append(line);
+              }
+              output.append("\n");
+            }
+          }
+          catch (IOException e)
+          {
+          	// since we are reading from a buffer, this isn't likely to happen,
+          	// but if it does we just ignore it and treat it like its the end of the stream
+          }
+          stringOutput = output.toString();
+        }
+
+        return stringOutput;
     }
 
     /**
@@ -337,7 +385,7 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
                 execTime >= DriverSpy.SqlTimingErrorThresholdMsec)
             {
                 sqlTimingLogger.error(
-                  buildSqlTimingDump(spy, execTime, methodCall, sql, true));
+                  buildSqlTimingDump(spy, execTime, methodCall, sql, sqlTimingLogger.isDebugEnabled()));
             }
             else if (sqlTimingLogger.isWarnEnabled())
             {
@@ -345,7 +393,7 @@ public class Slf4jSpyLogDelegator implements SpyLogDelegator
                   execTime >= DriverSpy.SqlTimingWarnThresholdMsec)
                 {
                     sqlTimingLogger.warn(
-                      buildSqlTimingDump(spy, execTime, methodCall, sql, true));
+                      buildSqlTimingDump(spy, execTime, methodCall, sql, sqlTimingLogger.isDebugEnabled()));
                 }
                 else if (sqlTimingLogger.isDebugEnabled())
                 {
